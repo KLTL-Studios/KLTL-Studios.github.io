@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: url("/res/star-bg.png") no-repeat center center fixed;
+  background-size: cover;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.main-header {
+  display: flex;
+  max-height: 10vh;
+  justify-content: space-between;
+  align-items: center;
+  background: #272727f5;
+  border-bottom: 4px solid #b33a3a;
+  padding: 0.5rem 0.5vw;
+  margin: 0 0 1rem 0;
+}
+
+.header-nav {
+  max-height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 2vw;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.nav-bottom {
+  background: #272727f5;
+  border-top: 4px solid #b33a3a;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 2rem;
+  margin-top: 2rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+}
+
+.nav-bottom-left {
+  color: #b33a3a;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.nav-bottom-right {
+  color: #444;
+}
+
+.nav-bottom a {
+  color: #b2b2b2;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 0.25rem;
+  transition: color 0.2s;
+}
+
+.nav-bottom a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.default-btn {
+  background: #6e6e6e;
+  color: #2e2e2e;
+  font-family: "Share Tech Mono", "Consolas", monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.5rem 2vw;
+  box-shadow: 3px 3px 0 #f48181;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.default-btn:hover {
+  background: #323232;
+  color: #b33a3a;
+  box-shadow: 1px 1px 0 #b33a3a;
+}
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #b33a3a;
+  cursor: pointer;
+  margin-left: auto;
+}
+.hamburger:hover{
+  color: #d95959;
+}
+
+/* Responsive hamburger menu */
+@media (max-width: 600px) {
+
+  .hamburger {
+    display: block;
+    z-index: 201;
+    position: relative;
+    /* Move possiton to the left abit */
+    margin-right: 5%;
+  }
+  .header-nav {
+    display: none;
+  }
+  .header-nav.floating-nav.open {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 80px; /* adjust as needed */
+    right: 16px;
+    width: 80vw;
+    max-width: 200px;
+    max-height: 30vh;
+    background: #272727f5;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(141, 141, 141, 0.438);
+    z-index: 200;
+    padding: 2rem 2rem;
+    gap: 1rem;
+    animation: fadeIn 0.2s;
+  }
+  .default-btn{
+    width: 110%;
+    text-align: center;
+    background: #6e6e6e;
+      color: #2e2e2e;
+      font-family: "Share Tech Mono", "Consolas", monospace;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 0.7rem;
+      padding: 0.5rem 2vw;
+      box-shadow: 3px 3px 0 #f48181;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+  }
+    .main-header {
+      padding: 0.5rem 1vw;
+    }
+  
+    .header-left {
+      padding: 0.5rem 1vw;
+      border-radius: 1rem;
+      box-shadow: 3px 3px 0 #b33a3a;
+    }
+  
+    .header-nav {
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+  
+    .nav-btn {
+      font-size: 1.1rem;
+      border-radius: 0.5rem;
+      padding: 0.2rem 2vw;
+      box-shadow: 3px 3px 0 #888;
+    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
+}

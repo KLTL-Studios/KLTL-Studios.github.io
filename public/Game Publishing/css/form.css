@@ -1,0 +1,83 @@
+@font-face
+{
+    font-family: 'Font';
+    color: #ffffff;
+    src: url(../res/font/x12y16pxMaruMonica.ttf)
+}
+
+body
+{
+    font-family: 'Font';
+    color: rgb(215, 215, 215);
+
+    background-color: rgb(77, 70, 118);
+    background-image: url(../res/images/20241212212021.png);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+h1
+{
+    font-size: 60px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+
+.box-container
+{
+    background-color: rgba(22, 22, 22, 0.578);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    outline: auto;
+    outline-width: 5px;
+    outline-color: rgb(24, 24, 24);
+    border-radius: 20px;
+
+    margin: 5%;
+    padding: 5%;
+    outline-style: double;
+}
+
+.info-container
+{
+    border-radius: 10px;
+
+    background-color: rgba(57, 56, 56, 0.596);
+
+    outline: auto;
+    outline-color: rgb(24, 24, 24);
+    
+    margin: 1%;
+    padding: 2%;
+    outline-style: solid;
+
+    box-shadow: solid 50px rgb(169, 169, 169);
+}
+
+.button
+{
+    padding: 10px 20px;
+    font-size: 1.5em;
+    color: rgb(172, 13, 13);
+    background-color: rgb(35, 35, 35);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+button:hover
+{
+    background-color: black;
+}

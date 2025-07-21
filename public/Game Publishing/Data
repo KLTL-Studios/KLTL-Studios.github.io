@@ -1,0 +1,15 @@
+create table mytable
+(
+    GameTitle       varchar(50)  null,
+    GameGenre       varchar(50)  null,
+    GamePlayTime    smallint     null,
+    `Horology/Time` varchar(8)   null,
+    GameDescription text         null,
+    GameIcon        varchar(100) null,
+    GameFile        varchar(100) null,
+    FBLink          varchar(200) null,
+    YTLink          varchar(200) null,
+    InstaLink       varchar(200) null
+);
+
+

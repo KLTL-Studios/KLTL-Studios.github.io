@@ -1,0 +1,319 @@
+﻿#front_left {
+	font-family: Arial;
+	background-color: #efefef;
+	padding: 5px;
+	padding-top: 6px;
+}
+#front_center {
+	font-family: Arial;
+	background-color: #ffffff;
+	padding: 8px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	background: url('../images/nav_gradient.png') #ffffff repeat-x;
+}
+#front_right {
+	font-family: Arial;
+	background-color: #e6f2ff;
+	padding: 8px;
+	padding-top: 10px;
+	padding-left: 0px;
+	width: 235px;
+	background: url('../images/nav_gradient.png') #ffffff repeat-x;
+}
+#front_toolkit .imgfloat {
+	float: left;
+	margin-right: 10px;	/**override**/
+}
+#front_toolkit a {
+	text-decoration: none;
+	color: #000000;
+}
+#front_toolkit a:hover {
+	text-decoration: underline;
+}
+#front_services {
+	padding: 0px; /**used table**/
+	padding-left: 2px;
+	margin-top: -3px;
+	padding-bottom: 8px;
+}
+#front_services form {
+	margin-top: -4px;
+	padding-left: 3px;
+	padding-bottom: 2px;
+}
+#front_services table {
+	width: 100%;
+}
+#front_services table td {
+	padding: 8px;
+	padding-bottom: 1px;
+	padding-top: 4px;
+}
+#front_services table {
+	padding: 8px;
+	padding-bottom: 1px;
+	padding-top: 4px;
+}
+#front_services ul {
+	margin-top: 10px;
+}
+#front_services .sites {
+	font-family: Tahoma;
+	margin-top: -5px;
+}
+.sites li, .qdownloads li {
+	padding-bottom: 6px;
+	font-size: 8pt;
+}
+#front_services .qdownloads {
+	font-family: Tahoma;
+	font-size: 8pt;
+	margin-top: -5px;
+}
+#QDownloadsWindow .qdownloads {
+	font-family: Tahoma;
+	font-size: 8pt;
+	margin-top: -12px;
+}
+#front_services select {
+	border: 1px solid #7f9db9;
+	font-size: 8pt;
+	padding: 0px;
+}
+.services_header {
+	margin-bottom: 0px;
+}
+#front_services .qsearch table {
+	width: 205px;
+}
+#front_services .qsearch table td {
+	padding: 0px;
+	vertical-align: top;
+	text-align: left;
+}
+#front_photos {
+	font-family: Tahoma;
+	margin-right: 8px;
+}
+#front_publications {
+	padding: 5px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	padding-right: 0px;
+}
+#front_photos.alight {
+	padding: 5px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	padding-right: 0px;
+}
+#front_photos img {
+	/**float: left; **/
+	border: 1px #003399 solid;
+	margin-right: 5px;
+	margin-top: 0px;
+}
+#front_photos .photo_item {
+	display: block;
+	height: 88px;
+}
+#photo_table {
+	width: 99%;
+	margin-left: auto;
+	margin-right: auto;
+}
+#photo_table tr td {
+	text-align: center;
+	width: 33%;
+}
+#photo1, #photo2, #photo3, 
+#photo4, #photo5, #photo6 { /**hover effect inside photo_table for the descs**/
+	position: relative;
+	z-index: 999;
+	visibility: hidden;
+	text-align: left;
+}
+.photo_hover {
+	position: absolute; 
+	margin-top: -45px; 
+	margin-left: 105px;
+	border: 1px black solid; 
+	background-color: #f2f8fb;
+	padding: 7px;
+	width: 180px;
+	display: inline;
+}
+#front_publications {
+	font-family: Tahoma;
+	padding-bottom: 10px;
+}
+#front_publications .imgfloat {
+	float: right;
+	padding-right: 5px;
+}
+.publications_header {
+	color: #002163 !important;
+	/**font-weight: bold;**/
+}
+#front_publications a {
+	color: #003399;
+}
+#front_publications span {
+	font-size: 8pt;
+}
+#front_biography {
+	font-size: 8pt;
+}
+#front_biography a {
+	color: #002163;
+}
+#front_biography span {
+	font-size: 10pt;
+	/**font-weight: bold;**/
+	display: block;
+	padding-bottom: 5px;	
+}
+#front_biography img {
+	float: right;
+	border: 1px #003399 solid;
+	margin-left: 5px;
+	margin-top: 4px;
+}
+#front_RSS {
+	font-family: Arial;
+	text-align: justify;
+}
+#front_RSS img {
+	float: left;
+	margin-left: 5px;
+	margin-right: 8px;
+	margin-top: 5px;
+}
+#front_photos.alight_b a:hover {
+	color: #333333; /**grey**/;
+	text-decoration: none;
+}
+#front_photos.alight a:hover {
+	color: #333333; /**grey**/;
+	text-decoration: none;
+}
+#BRHelpWindow {
+	z-index: 500;
+	visibility: hidden;
+	width: 270px;
+	position: absolute;
+	top: 165px; /**320px**/
+	left: 28%; /**27%**/
+}
+#BRHelpWindow_hover {
+	background-image: url('../images/bg_help.png'); 
+}
+#QDownloadsWindow {
+	z-index: 500;
+	visibility: hidden;
+	width: 280px;
+	position: absolute;
+	top: 165px; /**290px**/
+	left: 38%; /**34%**/
+}
+#QDownloadsWindow_hover {
+	background-image: url('../images/bg_download.png');
+}
+#QDownloadsWindow_hover {
+	width: 100%;
+	background-color: #f2f8fb;
+	padding: 7px;
+	border: 1px #7da2bc solid;
+	font-size: 8pt;
+	background-repeat: no-repeat; 
+	background-position: left top;
+}
+#BRHelpWindow_hover {
+	width: 100%;
+	background-color: #f2f8fb;
+	padding: 7px;
+	border: 1px #7da2bc solid;
+	font-size: 8pt;
+	background-repeat: no-repeat; 
+	background-position: left top;
+}
+#QDownloadsWindow_hover img {
+	vertical-align: middle;
+}
+
+#BRHelpWindow_hover img {
+	vertical-align: middle;
+}
+
+#QDownloadsWindow_hover .header_popup {
+	font-size: small;
+}
+
+#BRHelpWindow_hover .header_popup {
+	font-size: small;
+}
+#front_speech {
+	font-size: 8pt;
+	padding-bottom: 5px;
+	padding-left: 2px;
+}
+#front_speech span a {
+	color: #002163;
+}
+#front_speech span {
+	font-size: 10pt;
+	/**display: block;**/
+	padding-bottom: 5px;	
+}
+#front_speech img {
+	float: right;
+	border: 1px #003399 solid;
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+#front_speech td {
+	padding-left: 7px;
+	padding-right: 5px;
+}
+
+.table_slide {
+	border-style: solid;
+	border-color: #C0C0C0;
+	border-width: 0px 1px 1px 1px;
+	margin: 4px 5px 2px 10px;
+	padding: 0px 5px 5px 5px;
+	font-family: tahoma;
+	border-collapse: collapse;
+}
+.bottom_row_slide {
+	text-align: center;
+}
+.prev_image_button {
+	text-align: right;
+}
+.slidecount_align {
+	vertical-align: middle;
+}
+
+.front_feature {
+	font-family: tahoma;
+	font-size: 8pt;
+}
+
+.feature_header {
+	font-family: tahoma;
+	font-size: 12pt;
+	color: #002163;
+}
+
+input.btn {
+	width:10pt;
+    overflow:visible;
+    font-weight: bold;
+    font-size: 10pt;
+    margin:0;padding:0;
+    border:0;
+}
