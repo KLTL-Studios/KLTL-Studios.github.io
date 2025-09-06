@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicol Region Patient Data Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .generate-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+
+        .generate-btn:hover {
+            background-color: #219a52;
+        }
+
+        .generate-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .preview {
+            margin-top: 30px;
+            max-height: 400px;
+            overflow: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bicol Region Patient Data Generator</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+            Generates 500 realistic patient records with Filipino names and Bicol Region addresses
+        </p>
+
+        <button id="generateBtn" class="generate-btn">Generate Patient Data & Download Excel</button>
+
+        <div id="status" class="status"></div>
+
+        <div id="preview" class="preview" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Filipino names data for Bicol Region
+        const bicolFirstNames = [
+            'Maria', 'Jose', 'Juan', 'Ana', 'Antonio', 'Carmen', 'Francisco', 'Luz', 'Pedro', 'Rosa',
+            'Manuel', 'Josefa', 'Jesus', 'Esperanza', 'Ricardo', 'Remedios', 'Miguel', 'Concepcion', 'Mariano', 'Elena',
+            'Roberto', 'Cristina', 'Eduardo', 'Soledad', 'Fernando', 'Gloria', 'Rodrigo', 'Milagros', 'Carlos', 'Dolores',
+            'Reynaldo', 'Leonora', 'Benjamin', 'Corazon', 'Alfredo', 'Rosario', 'Ernesto', 'Teresita', 'Arturo', 'Pacita',
+            'Gerardo', 'Erlinda', 'Raul', 'Natividad', 'Armando', 'Socorro', 'Leonardo', 'Visitacion', 'Isidro', 'Purificacion'
+        ];
+
+        const bicolSurnames = [
+            'Santos', 'Reyes', 'Cruz', 'Bautista', 'Ocampo', 'Garcia', 'Mendoza', 'Torres', 'Teves', 'Salvacion',
+            'Villanueva', 'Ramos', 'Castillo', 'Rivera', 'Morales', 'Aquino', 'Dela Cruz', 'Valdez', 'Santiago', 'Soriano',
+            'Imperial', 'Marasigan', 'Espinas', 'Añonuevo', 'Balandra', 'Cabrera', 'Dalisay', 'Esguerra', 'Fajardo', 'Guerrero',
+            'Hipolito', 'Ignacio', 'Javier', 'Kingkay', 'Laxamana', 'Mahinay', 'Nicolas', 'Ordonez', 'Panganiban', 'Quizon',
+            'Ricafort', 'Sandoval', 'Tabora', 'Ubaldo', 'Valencia', 'Wenceslao', 'Xyra', 'Yabut', 'Zamora', 'Alcantara'
+        ];
+
+        const middleInitials = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        const bloodTypes = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
+
+        const allergies = [
+            'Peanuts', 'Shellfish', 'Eggs', 'Milk', 'Soy', 'Wheat', 'Fish', 'Tree nuts',
+            'Dust mites', 'Pollen', 'Pet dander', 'Mold', 'Latex', 'Penicillin',
+            'Aspirin', 'Ibuprofen', 'Sulfa drugs', 'Contrast dye'
+        ];
+
+        const chronicConditions = [
+            'Arthritis', 'Diabetes', 'Heart Disease', 'Hypertension', 'Asthma', 'COPD',
+            'Osteoporosis', 'Kidney Disease', 'Liver Disease', 'Depression', 'Anxiety',
+            'Migraine', 'Epilepsy', 'Thyroid Disorder'
+        ];
+
+        const bicolAddresses = [
+            // Albay
+            { street: 'Rizal St.', city: 'Legazpi City, Albay' },
+            { street: 'Penaranda St.', city: 'Legazpi City, Albay' },
+            { street: 'Magallanes St.', city: 'Tabaco City, Albay' },
+            { street: 'Bonifacio St.', city: 'Ligao City, Albay' },
+            { street: 'Washington St.', city: 'Daraga, Albay' },
+            { street: 'P. Villanueva St.', city: 'Guinobatan, Albay' },
+            { street: 'J.P. Rizal St.', city: 'Polangui, Albay' },
+            { street: 'Magsaysay Ave.', city: 'Bacacay, Albay' },
+            // Camarines Sur
+            { street: 'Magsaysay Ave.', city: 'Naga City, Camarines Sur' },
+            { street: 'Panganiban Drive', city: 'Naga City, Camarines Sur' },
+            { street: 'Almeda Highway', city: 'Iriga City, Camarines Sur' },
+            { street: 'Rizal St.', city: 'Pili, Camarines Sur' },
+            { street: 'General Luna St.', city: 'Sipocot, Camarines Sur' },
+            { street: 'Quezon Ave.', city: 'Calabanga, Camarines Sur' },
+            { street: 'Del Rosario St.', city: 'Libmanan, Camarines Sur' },
+            { street: 'San Roque St.', city: 'Cabusao, Camarines Sur' },
+            // Camarines Norte
+            { street: 'Maharlika Highway', city: 'Daet, Camarines Norte' },
+            { street: 'Jose Panganiban St.', city: 'Jose Panganiban, Camarines Norte' },
+            { street: 'Vinzons Ave.', city: 'Vinzons, Camarines Norte' },
+            { street: 'Mercedes St.', city: 'Mercedes, Camarines Norte' },
+            { street: 'Basud St.', city: 'Basud, Camarines Norte' },
+            // Sorsogon
+            { street: 'Rizal St.', city: 'Sorsogon City, Sorsogon' },
+            { street: 'Magsaysay St.', city: 'Bulan, Sorsogon' },
+            { street: 'Castilla St.', city: 'Castilla, Sorsogon' },
+            { street: 'Irosin Ave.', city: 'Irosin, Sorsogon' },
+            { street: 'Barcelona St.', city: 'Barcelona, Sorsogon' },
+            // Masbate
+            { street: 'Quezon St.', city: 'Masbate City, Masbate' },
+            { street: 'Mobo St.', city: 'Mobo, Masbate' },
+            { street: 'Cataingan Ave.', city: 'Cataingan, Masbate' },
+            { street: 'Placer St.', city: 'Placer, Masbate' },
+            { street: 'Esperanza Ave.', city: 'Esperanza, Masbate' }
+        ];
+
+        const bicolEmployers = [
+            // Government
+            { name: 'Department of Education - Bicol', occupation: 'Teacher' },
+            { name: 'Bicol Medical Center', occupation: 'Nurse' },
+            { name: 'Albay Provincial Government', occupation: 'Government Employee' },
+            { name: 'Naga City Government', occupation: 'City Employee' },
+            { name: 'Department of Health - Bicol', occupation: 'Health Worker' },
+            { name: 'Bureau of Internal Revenue - Bicol', occupation: 'Revenue Officer' },
+            { name: 'Philippine National Police - Bicol', occupation: 'Police Officer' },
+            { name: 'Department of Social Welfare - Bicol', occupation: 'Social Worker' },
+
+            // Utilities
+            { name: 'CASURECO I', occupation: 'Electrician' },
+            { name: 'CASURECO II', occupation: 'Lineman' },
+            { name: 'CASURECO III', occupation: 'Electrical Engineer' },
+            { name: 'CASURECO IV', occupation: 'Meter Reader' },
+            { name: 'Albay Power and Energy Corp.', occupation: 'Power Plant Operator' },
+            { name: 'Camarines Sur Water District', occupation: 'Water Technician' },
+            { name: 'Naga City Water District', occupation: 'Plumber' },
+
+            // Banking
+            { name: 'Landbank of the Philippines - Bicol', occupation: 'Bank Teller' },
+            { name: 'Development Bank of the Philippines - Bicol', occupation: 'Loan Officer' },
+            { name: 'BPI Naga Branch', occupation: 'Account Manager' },
+            { name: 'Metrobank Legazpi Branch', occupation: 'Branch Manager' },
+            { name: 'PNB Iriga Branch', occupation: 'Credit Analyst' },
+
+            // Agriculture
+            { name: 'NIA Bicol Region', occupation: 'Agricultural Engineer' },
+            { name: 'Department of Agriculture - Bicol', occupation: 'Agricultural Technician' },
+            { name: 'Philippine Coconut Authority - Bicol', occupation: 'Coconut Technologist' },
+            { name: 'Bicol University College of Agriculture', occupation: 'Professor' },
+
+            // Transportation
+            { name: 'Philippine Airlines - Legazpi', occupation: 'Flight Attendant' },
+            { name: 'Cebu Pacific - Naga', occupation: 'Ground Handler' },
+            { name: 'Bicol Isarog Transport System', occupation: 'Bus Driver' },
+            { name: 'JoyBus Lines', occupation: 'Bus Conductor' },
+
+            // Healthcare
+            { name: 'Dr. Paulino J. Garcia Memorial Research', occupation: 'Medical Technologist' },
+            { name: 'Aquinas University Hospital', occupation: 'Radiologic Technologist' },
+            { name: 'Camarines Sur Provincial Hospital', occupation: 'Physical Therapist' },
+            { name: 'Josefina Belmonte Duran Hospital', occupation: 'Pharmacist' },
+
+            // Education
+            { name: 'Bicol University', occupation: 'Professor' },
+            { name: 'Ateneo de Naga University', occupation: 'Instructor' },
+            { name: 'University of Nueva Caceres', occupation: 'Registrar' },
+            { name: 'Aquinas University of Legazpi', occupation: 'Librarian' },
+
+            // Private Companies
+            { name: 'San Miguel Corporation - Bicol', occupation: 'Production Supervisor' },
+            { name: 'Nestle Philippines - Cabuyao Plant', occupation: 'Quality Controller' },
+            { name: 'Jollibee Foods Corporation', occupation: 'Store Manager' },
+            { name: 'SM City Naga', occupation: 'Sales Associate' },
+            { name: 'Robinsons Place Naga', occupation: 'Customer Service' },
+            { name: 'LBC Express - Bicol', occupation: 'Courier' },
+            { name: 'Petron Corporation - Bicol', occupation: 'Station Manager' },
+            { name: 'Shell Philippines - Bicol', occupation: 'Sales Representative' }
+        ];
+
+        const healthcards = [
+            'PhilHealth', 'SSS', 'GSIS', 'Pag-IBIG', 'Company HMO', 'Maxicare', 'Medicard', 'IntelliCare'
+        ];
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomFloat(min, max, decimals = 2) {
+            return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
+        }
+
+        function generateRandomDate(start, end) {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+            return new Date(randomTime);
+        }
+
+        function generateBloodPressure() {
+            const systolic = getRandomNumber(90, 180);
+            const diastolic = getRandomNumber(60, 120);
+            return `${systolic}/${diastolic}`;
+        }
+
+        function generatePatientData() {
+            const patients = [];
+            const usedNames = new Set();
+
+            // Distribute blood types evenly
+            const bloodTypeDistribution = [];
+            const bloodTypeCount = Math.floor(500 / bloodTypes.length);
+            const remainder = 500 % bloodTypes.length;
+
+            bloodTypes.forEach((type, index) => {
+                const count = bloodTypeCount + (index < remainder ? 1 : 0);
+                for (let i = 0; i < count; i++) {
+                    bloodTypeDistribution.push(type);
+                }
+            });
+
+            // Shuffle blood types
+            for (let i = bloodTypeDistribution.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [bloodTypeDistribution[i], bloodTypeDistribution[j]] = [bloodTypeDistribution[j], bloodTypeDistribution[i]];
+            }
+
+            for (let i = 0; i < 500; i++) {
+                let fullName;
+                do {
+                    const firstName = getRandomElement(bicolFirstNames);
+                    const middleInitial = getRandomElement(middleInitials);
+                    const surname = getRandomElement(bicolSurnames);
+                    fullName = `${firstName} ${middleInitial}. ${surname}`;
+                } while (usedNames.has(fullName));
+                usedNames.add(fullName);
+
+                const address = getRandomElement(bicolAddresses);
+                const houseNumber = getRandomNumber(1, 99);
+                const fullAddress = `${houseNumber} ${address.street}, ${address.city}`;
+
+                const age = getRandomNumber(1, 85);
+                const birthYear = new Date().getFullYear() - age;
+                const birthDate = generateRandomDate(`${birthYear}-01-01`, `${birthYear}-12-31`);
+
+                // 40-60% chance of allergies
+                const hasAllergies = Math.random() < 0.5; // 50% chance
+                const patientAllergies = hasAllergies ?
+                    Array.from(new Set([...Array(getRandomNumber(1, 3))].map(() => getRandomElement(allergies)))).join(', ') : 'N/A';
+
+                // 40-60% chance of chronic conditions
+                const hasChronicCondition = Math.random() < 0.5; // 50% chance
+                const chronicCondition = hasChronicCondition ? getRandomElement(chronicConditions) : 'N/A';
+
+                // Employment logic
+                const isStudent = age < 18 || (age >= 18 && age <= 25 && Math.random() < 0.3);
+                const hasEmployment = !isStudent && Math.random() < 0.8; // 80% employment rate for non-students
+
+                let employer = 'N/A';
+                let occupation = 'N/A';
+                let healthcard = 'N/A';
+
+                if (isStudent) {
+                    occupation = 'Student';
+                } else if (hasEmployment) {
+                    const employerData = getRandomElement(bicolEmployers);
+                    employer = employerData.name;
+                    occupation = employerData.occupation;
+
+                    // Only employed people can have healthcards, but not all do
+                    if (Math.random() < 0.7) { // 70% of employed people have healthcards
+                        healthcard = getRandomElement(healthcards);
+                    }
+                }
+
+                const patient = {
+                    'Patient ID': `P${String(i + 1).padStart(4, '0')}`,
+                    'Patient Name': fullName,
+                    'Blood Type': bloodTypeDistribution[i],
+                    'Height(m)': getRandomFloat(1.50, 1.90),
+                    'Weight(kg)': getRandomFloat(45, 120),
+                    'Blood Pressure': generateBloodPressure(),
+                    'Allergies': patientAllergies,
+                    'Chronic Condition': chronicCondition,
+                    'Date of Birth': birthDate.toLocaleDateString('en-US'),
+                    'Employer': employer,
+                    'Healthcard': healthcard,
+                    'Occupation': occupation,
+                    'Address': fullAddress
+                };
+
+                patients.push(patient);
+            }
+
+            return patients;
+        }
+
+        function createPreviewTable(data) {
+            const headers = Object.keys(data[0]);
+            let html = '<table><thead><tr>';
+            headers.forEach(header => {
+                html += `<th>${header}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            // Show first 10 rows
+            data.slice(0, 10).forEach(row => {
+                html += '<tr>';
+                headers.forEach(header => {
+                    html += `<td>${row[header]}</td>`;
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function downloadExcel(data) {
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Patient Data');
+
+            // Auto-size columns
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const colWidths = [];
+
+            for (let C = range.s.c; C <= range.e.c; C++) {
+                let maxWidth = 0;
+                for (let R = range.s.r; R <= range.e.r; R++) {
+                    const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                    const cell = worksheet[cellAddress];
+                    if (cell && cell.v) {
+                        maxWidth = Math.max(maxWidth, cell.v.toString().length);
+                    }
+                }
+                colWidths.push({ width: Math.min(maxWidth + 2, 50) });
+            }
+            worksheet['!cols'] = colWidths;
+
+            XLSX.writeFile(workbook, 'Bicol_Region_Patient_Data.xlsx');
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', function () {
+            const btn = this;
+            const status = document.getElementById('status');
+            const preview = document.getElementById('preview');
+
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+            status.textContent = 'Generating patient data...';
+
+            setTimeout(() => {
+                try {
+                    const patientData = generatePatientData();
+
+                    status.innerHTML = `
+                        <div style="color: #27ae60; font-weight: bold;">
+                            ✓ Generated 500 patient records successfully!
+                        </div>
+                        <div style="margin-top: 10px; font-size: 14px;">
+                            Preview showing first 10 records:
+                        </div>
+                    `;
+
+                    preview.innerHTML = createPreviewTable(patientData);
+                    preview.style.display = 'block';
+
+                    downloadExcel(patientData);
+
+                    btn.textContent = 'Generate New Data';
+                    btn.disabled = false;
+
+                } catch (error) {
+                    status.innerHTML = `<div style="color: #e74c3c;">Error: ${error.message}</div>`;
+                    btn.textContent = 'Try Again';
+                    btn.disabled = false;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>
